@@ -19,13 +19,18 @@ let config = {
 let player;
 let platforms;
 let phantomPlatforms;
-let cursors
+let cursors;
+let objective;
+let scoreText;
+let score = 0;
+let relocate
 let game = new Phaser.Game(config);
 
 function preload() {
     this.load.image('background', 'Img/BackgroundGray.png');
     this.load.image('block', 'Img/Block.png');
     this.load.image('ground', 'Img/Ground.png');
+    this.load.spritesheet('objective', 'Img/Objective.png', {frameWidth: 80, frameHeight: 80});
     this.load.spritesheet('knight', 'Img/Heartless%20Knight%20V1.0.png', {frameWidth: 80, frameHeight: 80});
 }
 
@@ -34,10 +39,14 @@ function create() {
     this.add.image(1500, 500, 'background');
     platforms = this.physics.add.staticGroup();
     phantomPlatforms = this.physics.add.staticGroup();
+    objective = this.physics.add.staticGroup();
     // Assets
     //ground
     platforms.create(768, 700, 'ground');
     //ground
+    //objective
+    objective.create(80,80, 'objective');
+    //objective
     //blocks
     //solid
     platforms.create(600, 600, 'block');//1
@@ -80,7 +89,10 @@ function create() {
         repeat: -1
     });
     cursors = this.input.keyboard.createCursorKeys();
+
+    scoreText = this.add.text(1300, 16, 'Score: 0', {fontSize: '32px', fill: '#000'});
     this.physics.add.collider(player, platforms);
+    this.physics.add.overlap(player, objective, complete, null, this)
 }
 
 function update() {
@@ -101,4 +113,18 @@ function update() {
     if (cursors.up.isDown && player.body.touching.down) {
         player.setVelocityY(-330);
     }
+    if (relocate) {
+        if (score % 2 === 0){
+            objective.create(80,80, 'objective');
+        } else if (score % 2 === 1) {
+            objective.create(80,641, 'objective');
+        }
+        relocate = false;
+    }
+}
+function complete(player, objective) {
+    objective.disableBody(true, true);
+    score += 1;
+    scoreText.setText('Score: ' + score);
+    relocate = true;
 }
