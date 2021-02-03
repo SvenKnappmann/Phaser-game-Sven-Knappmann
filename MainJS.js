@@ -18,7 +18,7 @@ let config = {
 
 let player;
 let platforms;
-let phantomplatforms;
+let phantomPlatforms;
 let cursors
 let game = new Phaser.Game(config);
 
@@ -33,11 +33,13 @@ function create() {
     this.add.image(500, 500, 'background');
     this.add.image(1500, 500, 'background');
     platforms = this.physics.add.staticGroup();
-    phantomplatforms = this.physics.add.staticGroup();
-    platforms.create(768, 700, 'ground');
+    phantomPlatforms = this.physics.add.staticGroup();
     // Assets
+    //ground
+    platforms.create(768, 700, 'ground');
+    //ground
     //blocks
-    //normal
+    //solid
     platforms.create(600, 600, 'block');//1
     platforms.create(900, 425, 'block');//2
     platforms.create(1300, 500, 'block');//3
@@ -48,15 +50,17 @@ function create() {
     platforms.create(600, 300, 'block');//8
     platforms.create(300, 300, 'block');//9
     platforms.create(0, 150, 'block');//10
-    //normal
+    //solid
     //phantom
-    phantomplatforms.create(890, 425, 'block');//1
-    phantomplatforms.create(900, 300, 'block');//2
-    phantomplatforms.create(100, 180, 'block');//3
+    phantomPlatforms.create(890, 425, 'block');//1
+    phantomPlatforms.create(900, 300, 'block');//2
+    phantomPlatforms.create(100, 180, 'block');//3
     //phantom
     //blocks
-    // Assets
+    //player
     player = this.physics.add.sprite(200, 640, 'knight');
+    //player
+    // Assets
     player.setCollideWorldBounds(true);
     this.anims.create({
         key: 'left',
